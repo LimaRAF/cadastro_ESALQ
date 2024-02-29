@@ -30,10 +30,6 @@ for(i in 1:length(script)) {
   script[i] <- gsub("TREE_ID", ind.i$NumeroPlaca, script[i], perl = TRUE)
 }
 
-## Final edits
-script <- gsub("NOME_POP", '', script, perl = TRUE)
-script <-
-
 ## Saving
 data.versao <- as.character(format(Sys.Date(), "%b_%Y"))
 save.path <- paste0("./outputs/script_", data.versao, ".txt")
