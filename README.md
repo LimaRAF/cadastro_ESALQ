@@ -1,95 +1,69 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# cadastro\_ESALQ <img src="man/figures/compendium-sticker.png" align="right" style="float:right; height:120px;"/>
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- cadastro_ESALQ <img src="man/figures/compendium-sticker.png" align="right" style="float:right; height:120px;"/> -->
+
+# Cadastro das árvores da ESALQ
 
 <!-- badges: start -->
 
-[![License: GPL (&gt;=
+[![License: GPL (\>=
 2)](https://img.shields.io/badge/License-GPL%20%28%3E%3D%202%29-blue.svg)](https://choosealicense.com/licenses/gpl-2.0/)
 <!-- badges: end -->
 
 <p align="left">
 • <a href="#overview">Overview</a><br> •
-<a href="#features">Features</a><br> •
-<a href="#content">Content</a><br> •
-<a href="#installation">Installation</a><br> •
-<a href="#usage">Usage</a><br> • <a href="#citation">Citation</a><br> •
-<a href="#contributing">Contributing</a><br> •
-<a href="#acknowledgments">Acknowledgments</a><br> •
-<a href="#references">References</a>
+<a href="#conteúdo">Conteúdo</a><br> • <a href="#uso">Uso</a><br> •
+<a href="#equipe">Equipe</a><br> •
+<a href="#agradecimentos">Agradecimentos</a><br>
 </p>
 
 ## Overview
 
-This research compendium… **{{ DESCRIBE YOUR PROJECT }}**
+Repositório para limpar e atualizar o **cadastro das árvores da ESALQ**.
 
-## Features
+## Conteúdo
 
-The main purpose of this compendium is to… **{{ DESCRIBE THE MAIN
-FEATURES }}**
+Este repositório esta organizado da seguinte forma:
 
-## Content
+- [`analyses/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/analyses):
+  pasta contendo os scripts criados especialmente para esse repositório
 
-This repository is structured as follow:
+- [`data/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/data):
+  pasta contendo os dados brutos e editados necessários para rodar os
+  scripts do repositório
 
--   [`DESCRIPTION`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/DESCRIPTION):
-    contains project metadata (authors, date, dependencies, etc.)
+- [`make.R`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/make.R):
+  script do R para rodar todos os códigos, do download da planilha a
+  criação do script SQL para envio ao Jefferson
 
--   [`make.R`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/make.R):
-    main R script to run the entire project
+- [`output/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/output):
+  pasta na qual onde é salva a versão mais atual do script SQL
 
--   [`R/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/R):
-    contains R functions developed especially for this project
+- [`R/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/R):
+  contém as funções internas usadas no repositório
 
--   **{{ LIST ADDITIONAL FILES/FOLDER }}**
+## Uso
 
-## Installation
+Se tudo correr bem, você deve apenar usar o seguinte código
 
-To install this compendium:
+``` r
+source("make.R")
+```
 
--   [Fork](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
-    this repository using the GitHub interface.
--   [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    your fork using `git clone fork-url` (replace `fork-url` by the URL
-    of your fork). Alternatively, open [RStudio
-    IDE](https://posit.co/products/open-source/rstudio/) and create a
-    New Project from Version Control.
+**Notas**
 
-## Usage
+Ao executar o script `make.R`: - Todos os pacotes listados no
+`DESCRIPTION` serão instalados, se necessário - Todos os pacotes e
+funções do R serão carregados - Algumas análises listadas no `make.R`
+podem demorar
 
-Launch the
-[`make.R`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/make.R)
-file with:
+## Equipe
 
-    source("make.R")
+- Renato A. Ferreira de Lima (LCB/ESALQ)
+- André Montanari (Eng. Agronômica/ESALQ)
+- Pedro Neves (Eng. Florestal/ESALQ)
 
-**Notes**
+## Agradecimentos
 
--   All required packages listed in the `DESCRIPTION` file will be
-    installed (if necessary)
--   All required packages and R functions will be loaded
--   Some analyses listed in the `make.R` might take time
-
-## Citation
-
-Please use the following citation:
-
-> **{{ ADD A CITATION }}**
-
-## Contributing
-
-All types of contributions are encouraged and valued. For more
-information, check out our [Contributor
-Guidelines](https://github.com/LimaRAF/cadastro_ESALQ/blob/main/CONTRIBUTING.md).
-
-Please note that this project is released with a [Contributor Code of
-Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
-By contributing to this project, you agree to abide by its terms.
-
-## Acknowledgments
-
-**{{ OPTIONAL SECTION }}**
-
-## References
-
-**{{ OPTIONAL SECTION }}**
+- PUB
+- FEALQ

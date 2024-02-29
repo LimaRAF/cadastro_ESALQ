@@ -6,26 +6,30 @@
 #' 
 #' @author Renato Lima \email{raflima@usp.br}
 #' 
-#' @date 2024/02/28
+#' @details
+#' Creation date: 28 Fev 2024
 
 
 
-## Install Dependencies (listed in DESCRIPTION) ----
 
+## Install Dependencies (listed in DESCRIPTION) --------------------
+# rcompendium::add_dependencies("R/")
+# rcompendium::add_dependencies("analyses/")
 devtools::install_deps(upgrade = "never")
+remotes::install_github('matildabrown/rWCVPdata')
 
 
-## Load Project Addins (R Functions and Packages) ----
-
+## Load Project Addins (R Functions and Packages) ------------------
 devtools::load_all(here::here())
 
 
-## Global Variables ----
-
+## Global Variables ------------------------------------------------
 # You can list global variables here (or in a separate R script)
 
 
-## Run Project ----
+## Run Project --------------------------------------------------
+source(here::here("analyses", "download_google_drive_files.R"))
+source(here::here("analyses", "get_species_scientific_names.R"))
+source(here::here("analyses", "get_species_common_names.R"))
+source(here::here("analyses", "build_sql_code.R"))
 
-# List all R scripts in a sequential order and using the following form:
-# source(here::here("analyses", "script_X.R"))
