@@ -30,10 +30,20 @@ link <- "https://docs.google.com/spreadsheets/d/1XJg-lW03M4T5UheuIci7OVUdv1kEzW5
 planilha <- as.data.frame(googlesheets4::read_sheet(link))
 saveRDS(planilha, "./data/raw-data/cadastro_arvores_esalq.RDS")
 
+# LIST OF SPECIES NAMES FOR ESALQ  ---------------------------------
+link <- "https://docs.google.com/spreadsheets/d/11FZh2hR7eDeuLr3lVefY-Fbp4D7a6eBnQT9oPrdEQgs/edit?usp=sharing"
+lista <- as.data.frame(googlesheets4::read_sheet(link))
+saveRDS(lista, "./data/raw-data/listas_arvores_esalq.RDS")
+
 # LATEST VERSION OF THE COMMON NAMES  ---------------------------------
 link <- "https://docs.google.com/spreadsheets/d/15aHE9bzSx42GffEuu8pDUq-1Y8NuE_-uZxgUThZ4mT4/edit?usp=sharing"
 comum <- as.data.frame(googlesheets4::read_sheet(link))
 saveRDS(comum, "./data/raw-data/nomes_comuns.RDS")
+
+# LATEST VERSION OF THE COMMON NAMES  ---------------------------------
+link <- "https://docs.google.com/spreadsheets/d/1nYyJ3zRG13HioqYemF6EUagt9C74KdsiPG4Gz42EdG8/edit?usp=sharing"
+micro <- as.data.frame(googlesheets4::read_sheet(link))
+saveRDS(micro, "./data/raw-data/esalq_PN_microproject.RDS")
 
 
 ## Removing all objects created in the script

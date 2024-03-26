@@ -14,14 +14,20 @@ obj.to.keep <- ls()
 ## Loading the file
 db <- readRDS("./data/raw-data/cadastro_arvores_esalq.RDS")
 
+# db <- as.data.frame(readxl::read_excel("./data/raw-data/species_book_indexes.xlsx"))
+# toto <- plantR::fixSpecies(db, "ESPÉCIE") 
+# db$Determinacao <- toto$scientificName.new
+
 ## Getting only the IDs with confirmed identifications
 db1 <- db[!is.na(db$Determinacao), ]
 
 # NAME CHECKING WITH FLORA DO BRASIL -------------------------------
 ## Checking all new species names (with Flora do Brasil)
 name.check <- flora::get.taxa(unique(db1$Determinacao), 
-                             suggestion.distance = 0.91)
+                             suggestion.distance = 0.91, drop = c(""))
 table(name.check$notes)
+name.check$id[!is.na(name.check$id)] <- 
+  paste0("fbo-", name.check$id[!is.na(name.check$id)])
 
 # Algum nome com grafia errada? Corrigir a coluna determinacao da planilha
 check_these <- !name.check$notes %in% c("", NA, "not found")
@@ -71,6 +77,10 @@ wfo.final$match.status[check_these] <- "no_match"
 names1$name_macthed_wfo <- wfo.final$scientificName
 names1$macth_status_wfo <- wfo.final$match.status
 names1$wfo_id <- wfo.final$taxonID
+names1$taxon_rank_wfo <- wfo.final$taxonRank
+names1$authorship_wfo <- wfo.final$scientificNameAuthorship
+names1$taxon_status_wfo <- wfo.final$nomenclaturalStatus
+names1$notes_wfo <- wfo.final$Old.status
 
 
 # NAME CHECKING WITH WORLD CHECKLIST OF VASCULAR PLANTS ---------------
@@ -118,20 +128,26 @@ if (any(replace_these)) {
 
 
 # REPLACING NAMES NOT FOUND IN FLORA DO BRASIL ---------------------------
-cols.fbo <- c("id", "notes", "search.str")
-cols.wfo <- c("wfo_id", "macth_status_wcvp", "search.str")
+# cols.fbo <- c("id", "notes", "search.str")
+# cols.wfo <- c("wfo_id", "macth_status_wfo", "search.str")
+cols.fbo <- c("id", "notes", "search.str", "authorship",
+              "taxon.rank", "taxon.status")
+cols.wfo <- c("wfo_id", "macth_status_wfo", "search.str", "authorship_wfo",
+              "taxon_rank_wfo", "taxon_status_wfo")
 name.check[name.check$notes %in% c("not found"), cols.fbo] <- 
   names1[, cols.wfo]
 
 # BINDING BACK INTO THE FULL DB -------------------------------
 names(name.check)[which(names(name.check) %in% "original.search")] <- "Determinacao"
-db2 <- dplyr::left_join(db1, name.check[c("search.str", "Determinacao")], 
+db2 <- dplyr::left_join(db1, 
+                        name.check[c(cols.fbo, "Determinacao")], 
                         by = "Determinacao")
-
 names(db2)[which(names(db2) %in% "search.str")] <- "nome.cientifico.correto"
 
 ## Saving the result
 saveRDS(db2, "./data/derived-data/cadastro_arvores_esalq_nome_cientifico.RDS")
+# writexl::write_xlsx(db2, "./data/derived-data/species_book_indexes_checked.xlsx")
+
 
 ## Removing all objects created in the script
 all.objs <- ls()
