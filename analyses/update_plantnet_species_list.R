@@ -285,7 +285,22 @@ final_list2 <- dplyr::left_join(final_list1, tmp, by = "accepted_wcvp_id")
 
 ## Already in the microproject
 micro <- readRDS("./data/raw-data/esalq_PN_microproject.RDS")
-final_list2$in_microproject <- final_list2$species %in% micro$species
+micro$accepted_name <- sapply(micro$species, flora::remove.authors)
+miss.micro <- micro[!micro$accepted_name %in% final_list2$accepted_name, ]
+miss_names <- as.data.frame(rWCVP::wcvp_match_names(miss.micro,
+                                                          name_col = "accepted_name",
+                                                          author_col = NULL,
+                                                          fuzzy = FALSE,
+                                                          progress_bar = TRUE))
+miss_names <- miss_names[!miss_names$wcvp_status %in% "Illegitimate", ]
+
+tmp <- wcvp_global[, c("plant_name_id", "accepted_name")]
+names(tmp)[1] <- "wcvp_accepted_id"
+tmp <- tmp[!duplicated(tmp$wcvp_accepted_id), ]
+miss_names1 <- dplyr::left_join(miss_names, tmp, by = "wcvp_accepted_id")
+micro$accepted_name[!micro$accepted_name %in% final_list2$accepted_name] <-
+  miss_names1$accepted_name.y
+final_list2$in_microproject <- final_list2$accepted_name %in% micro$accepted_name
 
 ## Organizing
 col_order <- c("check_status", "in_microproject",
@@ -294,6 +309,8 @@ col_order <- c("check_status", "in_microproject",
                "accepted_wcvp_id", "accepted_powo_id", 
                "lifeform_description", "geographic_area", "sources")
 final_list3 <- final_list2[, col_order]
+final_list3 <- final_list3[order(final_list3$family, final_list3$genus, final_list3$species), ]
+
 
 ## LAst minute, non tree, shrubs removal
 rm_spp <- c("Alcea rosea", "Arundo donax", "Dichorisandra thyrsiflora", 
