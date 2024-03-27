@@ -301,6 +301,7 @@ miss_names1 <- dplyr::left_join(miss_names, tmp, by = "wcvp_accepted_id")
 micro$accepted_name[!micro$accepted_name %in% final_list2$accepted_name] <-
   miss_names1$accepted_name.y
 final_list2$in_microproject <- final_list2$accepted_name %in% micro$accepted_name
+micro[!micro$accepted_name %in% final_list2$accepted_name, ]
 
 ## Organizing
 col_order <- c("check_status", "in_microproject",
@@ -316,7 +317,8 @@ final_list3 <- final_list3[order(final_list3$family, final_list3$genus, final_li
 rm_spp <- c("Alcea rosea", "Arundo donax", "Dichorisandra thyrsiflora", 
 "Typha latifolia", "Commelina rufipes", "Pontederia cordata", "Yucca flaccida", 
 "Bignonia magnifica","Clerodendrum thomsoniae","Mucuna pruriens","Myriopus paniculatus",
-"Paullinia elegans","Serjania orbicularis","Cleome spinosa")
+"Paullinia elegans","Serjania orbicularis","Cleome spinosa","Heliotropium transalpinum",
+"Euphorbia milii", "Muehlenbeckia platyclada", "Phoradendron rubrum","Paullinia cupana")
 final_list4 <- final_list3[!final_list3$accepted_name %in% rm_spp, ]
 
 ## Saving 
