@@ -11,7 +11,7 @@
 #' Creation date: 28 Fev 2024
 #' 
 
-cat("\nRunning script:", script, "...", "\n")
+cat(paste0("\033[0;", 31, "m", "\nRunning script: ", script, "...","\033[0m","\n"))
 
 # PREPARING CREDENTIAL FOR DOWNLOAD  ------------------------------------
 ## Getting all objects in the workspace before the script starts
@@ -53,4 +53,4 @@ saveRDS(micro, "./data/raw-data/esalq_PN_microproject.RDS")
 all.objs <- ls()
 rm.objs <- all.objs[!all.objs %in% obj.to.keep]
 rm(list = rm.objs)
-cat("Done with script:", script, "\n")
+cat(paste0("\033[0;", 36, "m", "Done with script: ", script, "...","\033[0m","\n"))

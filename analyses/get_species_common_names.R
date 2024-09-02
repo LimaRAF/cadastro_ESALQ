@@ -8,7 +8,8 @@
 #'
 #'
 
-cat("\nRunning script:", script, "...", "\n")
+cat(paste0("\033[0;", 31, "m", "\nRunning script: ", script, "...","\033[0m","\n"))
+# cat("\nRunning script:", script, "...", "\n")
 
 ## Getting all objects in the workspace before the script starts
 obj.to.keep <- ls()
@@ -216,4 +217,5 @@ saveRDS(db5, "./data/derived-data/cadastro_arvores_esalq_nome_cientifico_popular
 all.objs <- ls()
 rm.objs <- all.objs[!all.objs %in% obj.to.keep]
 rm(list = rm.objs)
-cat("Done with script:", script, "\n")
+cat(paste0("\033[0;", 36, "m", "Done with script: ", script, "...","\033[0m","\n"))
+# cat("Done with script:", script, "\n")
