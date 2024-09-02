@@ -7,7 +7,9 @@
 #' Creation date: 28 Fev 2024
 #'
 #'
-## Getting all names
+
+cat("\nRunning script:", script, "...", "\n")
+
 ## Getting all objects in the workspace before the script starts
 obj.to.keep <- ls()
 
@@ -120,7 +122,7 @@ tutu3$name <- stringr::str_to_title(tutu3$name)
 bd.names <- unique(db[, c("Gênero", "Nome")])
 new.spp.df <- data.frame(Gênero = new.spp, Nome = NA)
 bd.names <- unique(rbind.data.frame(bd.names, new.spp.df))
-bd.names1 <- dplyr::left_join(bd.names, tutu3)
+bd.names1 <- dplyr::left_join(bd.names, tutu3, by = "Gênero")
 names(tmp)[which(names(tmp) %in% "original.search")] <- "Gênero"
 tmp1 <- tmp[, c("Gênero", "search.str", "notes")]
 
@@ -132,25 +134,28 @@ bd.names2$Nome[replace_these] <- bd.names2$name[replace_these]
 miss.names <- readRDS("./data/raw-data/nomes_comuns.rds")
 replace_these <- is.na(bd.names2$Nome)
 miss.spp <- bd.names2$Gênero[replace_these]
-miss.spp[!miss.spp %in% miss.names[[1]]] # should be empty
+
+stopifnot(length(miss.spp[!miss.spp %in% miss.names[[1]]]) == 0) # should be empty
 
 toto <- dplyr::left_join(bd.names2, miss.names, by = "Gênero")
 bd.names2$Nome[replace_these] <- toto$name.y[replace_these] 
 replace_these <- is.na(bd.names2$Nome)
 if (any(replace_these))  
   bd.names2$Nome[replace_these] <- bd.names2$name[replace_these] 
-names(bd.names2)[which(names(bd.names2) %in% "search.str")] <- "nome.cientifico.correto"
+names(bd.names2)[which(names(bd.names2) %in% "search.str")] <- 
+  "nome.cientifico.correto"
 
 ## Saving common names in the full DB --------------------------------
 replace_these <- !is.na(bd.names2$nome.cientifico.correto)
 if (any(replace_these)) 
   bd.names2$nome.cientifico.correto[replace_these] <- 
     bd.names2$Gênero[replace_these]
-  
 bd.names3 <- bd.names2[!duplicated(bd.names2$nome.cientifico.correto),]
 
 ## Loading the file
-db4 <- dplyr::left_join(db3, bd.names3[c("nome.cientifico.correto", "Nome", "name")])
+db4 <- dplyr::left_join(db3, 
+                        bd.names3[c("nome.cientifico.correto", "Nome", "name")],
+                        by = "nome.cientifico.correto")
 
 check_these <- is.na(db4$Nome) 
 if (any(check_these)) {
@@ -186,18 +191,21 @@ if (any(check_these)) {
   # https://docs.google.com/spreadsheets/d/15aHE9bzSx42GffEuu8pDUq-1Y8NuE_-uZxgUThZ4mT4/edit?usp=sharing
   tmp <- unique(db4[check_these, c("nome.cientifico.correto", "Nome", "name")])
   print(tmp <- tmp[order(tmp$nome.cientifico.correto), ])
+  stopifnot(all(!check_these)) # all check_these must be FALSE
 }
 
 ## Final edits
+db4$Nome[db4$nome.cientifico.correto %in% "Araucaria columnaris"] <- 
+  "Araucária-colunar"
+db4$Nome[db4$nome.cientifico.correto %in% "Cecropia pachystachya"] <- 
+  "Embaúba-branca"
+
 check_these <- grepl('[0-9]', db4$Nome)
 if (any(check_these)) {
   cat("\nWeird common names:\n") 
   tmp <- unique(db4[check_these, c("nome.cientifico.correto", "Nome")])
-  tmp <- tmp[order(tmp$nome.cientifico.correto), ]
+  (tmp <- tmp[order(tmp$nome.cientifico.correto), ])
 }
-
-db4$Nome[db4$nome.cientifico.correto %in% "Araucaria columnaris"] <- "Araucária-colunar"
-db4$Nome[db4$nome.cientifico.correto %in% "Cecropia pachystachya"] <- "Embaúba-branca"
 
 ## Saving
 db5 <- db4[, -dim(db4)[2]]
@@ -208,4 +216,4 @@ saveRDS(db5, "./data/derived-data/cadastro_arvores_esalq_nome_cientifico_popular
 all.objs <- ls()
 rm.objs <- all.objs[!all.objs %in% obj.to.keep]
 rm(list = rm.objs)
-
+cat("Done with script:", script, "\n")

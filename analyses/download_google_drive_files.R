@@ -10,15 +10,18 @@
 #' @details
 #' Creation date: 28 Fev 2024
 #' 
+
+cat("\nRunning script:", script, "...", "\n")
+
 # PREPARING CREDENTIAL FOR DOWNLOAD  ------------------------------------
 ## Getting all objects in the workspace before the script starts
 obj.to.keep <- ls()
 
 ## Set authentication token to be stored in a folder called `.secrets`
-options(gargle_oauth_cache = ".secrets")
+# options(gargle_oauth_cache = ".secrets")
 
 ## Authenticate manually
-googlesheets4::gs4_auth()
+# googlesheets4::gs4_auth()
 
 ## If successful, the previous step stores a token file. Check that a file that
 ## stores a token exists with:
@@ -27,7 +30,7 @@ googlesheets4::gs4_auth()
 
 # LATEST VERSION OF THE GD SPREADSHEET  ---------------------------------
 link <- "https://docs.google.com/spreadsheets/d/1XJg-lW03M4T5UheuIci7OVUdv1kEzW5fBdDnXokm1OQ/edit?usp=sharing"
-planilha <- as.data.frame(googlesheets4::read_sheet(link))
+planilha <- as.data.frame(googlesheets4::read_sheet(link, guess_max = 5000))
 saveRDS(planilha, "./data/raw-data/cadastro_arvores_esalq.RDS")
 
 # LIST OF SPECIES NAMES FOR ESALQ  ---------------------------------
@@ -50,3 +53,4 @@ saveRDS(micro, "./data/raw-data/esalq_PN_microproject.RDS")
 all.objs <- ls()
 rm.objs <- all.objs[!all.objs %in% obj.to.keep]
 rm(list = rm.objs)
+cat("Done with script:", script, "\n")

@@ -6,6 +6,7 @@
 #' @details
 #' Creation date: 28 Fev 2024
 #' 
+cat("\nRunning script:", script, "...")
 obj.to.keep <- ls()
 
 ## Getting the most up-to-date full db
@@ -31,34 +32,7 @@ for(i in 1:length(script)) {
 }
 
 ## Saving
-data.versao <- as.character(format(Sys.Date(), "%b_%Y"))
+data.versao <- as.character(format(Sys.Date(), "%Y_%m"))
 save.path <- paste0("./outputs/script_", data.versao, ".txt")
 writeLines(script, save.path)
-
-
-## -------------------------------------------------------------------
-#### OLD CODES ####
-# ## Adding missing vernacular names to the update script
-# script <- readLines("script.txt")
-# spp.script <- lapply(strsplit(script, ", "), head, 1)
-# spp.script <- lapply(spp.script, strsplit, "= ")
-# spp.script <- unlist(lapply(spp.script, function(x) tail(x[[1]], 1)))
-# spp.script <- gsub("'", "", spp.script)
-# 
-# unique(spp.script[!(spp.script %in% bd.names2$Gênero | spp.script %in% bd.names2$search.str)])
-# 
-# for(i in 1:length(spp.script)) {
-#   spp.i <- spp.script[i]
-#   common.i <- tail(bd.names2$Nome[bd.names2$Gênero %in% spp.i], 1)
-#   if (length(common.i) > 0) {
-#     replace_these <- grepl(spp.i, script)
-#     script[replace_these] <- 
-#       gsub("qual é\\?", common.i, script[replace_these])
-#   } else {
-#     common.i <- tail(bd.names2$Nome[bd.names2$search.str %in% spp.i], 1)
-#     replace_these <- grepl(spp.i, script)
-#     script[replace_these] <- 
-#       gsub("qual é\\?", common.i, script[replace_these])
-#   }
-# }
-
+cat("\nDone with all scripts!\nCheck the folder 'output' for the result")
