@@ -25,10 +25,10 @@ Imports:
     here,
     jpeg,
     plantR,
+    plantRdata,
     readxl,
     remotes,
-    rWCVP,
     stringr,
+    tidyverse,
     tiff,
-    WorldFlora,
     writexl

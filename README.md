@@ -30,7 +30,9 @@ Este repositório esta organizado da seguinte forma:
 
 - [`data/`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/data):
   pasta contendo os dados brutos e editados necessários para rodar os
-  scripts do repositório
+  scripts do repositório. Na verdade os dados brutos, estão todos online
+  em pastas do Google Sheets [nesta
+  pasta](https://drive.google.com/drive/folders/1dnMfdS6csM8ZJIffZ6FUPPsXN6QgGzPY)
 
 - [`make.R`](https://github.com/LimaRAF/cadastro_ESALQ/tree/master/make.R):
   script do R para rodar todos os códigos, do download da planilha a
